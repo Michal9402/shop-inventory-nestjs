@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { CreateCatalogDto } from './dto/create-catalog.dto';
 import { UpdateCatalogDto } from './dto/update-catalog.dto';
@@ -33,12 +33,16 @@ export class CatalogsService {
   }
 
   async update(id: number, updateCatalogDto: UpdateCatalogDto) {
-    const catalog = await this.findOne(id);
+    if (!updateCatalogDto.name) {
+      throw new BadRequestException('Bad request, please check name property')
+    }
+
+    await this.findOne(id);
 
     const newCatalog = this.dbService.catalog.update({
       where: { id },
       data: {
-        name: updateCatalogDto.name ?? catalog.name
+        name: updateCatalogDto.name
       }
     })
 
