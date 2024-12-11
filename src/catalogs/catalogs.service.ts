@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { CreateCatalogDto } from './dto/create-catalog.dto';
 import { UpdateCatalogDto } from './dto/update-catalog.dto';
@@ -9,7 +9,9 @@ export class CatalogsService {
 
   async create(createCatalogDto: CreateCatalogDto) {
     return this.dbService.catalog.create({
-      data: createCatalogDto
+      data: {
+        name: createCatalogDto.name
+      }
     });
   }
 
@@ -18,23 +20,33 @@ export class CatalogsService {
   }
 
   async findOne(id: number) {
-    return this.dbService.catalog.findUnique({
+    const catalog = await this.dbService.catalog.findUnique({
       where: {
         id
       }
     })
+
+    if (!catalog) {
+      throw new NotFoundException(`Catalog with id: ${id} doesn't exists`)
+    }
+    return catalog;
   }
 
   async update(id: number, updateCatalogDto: UpdateCatalogDto) {
-    return this.dbService.catalog.update({
-      where: {
-        id
-      },
-      data: updateCatalogDto
+    const catalog = await this.findOne(id);
+
+    const newCatalog = this.dbService.catalog.update({
+      where: { id },
+      data: {
+        name: updateCatalogDto.name ?? catalog.name
+      }
     })
+
+    return newCatalog;
   }
 
   async remove(id: number) {
+    await this.findOne(id)
     return this.dbService.catalog.delete({
       where: {
         id
