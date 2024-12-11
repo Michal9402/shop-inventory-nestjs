@@ -8,21 +8,28 @@ export class CatalogsService {
   constructor(private readonly dbService: DatabaseService) { }
 
   async create(createCatalogDto: CreateCatalogDto) {
-    return this.dbService.catalog.create({
+    return await this.dbService.catalog.create({
       data: {
         name: createCatalogDto.name
       }
     });
   }
 
-  async findAll() {
-    return this.dbService.catalog.findMany();
+  async findAll(shouldIncludeProducts?: boolean) {
+    return await this.dbService.catalog.findMany({
+      include: {
+        products: !!shouldIncludeProducts
+      }
+    });
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, shouldIncludeProducts?: boolean) {
     const catalog = await this.dbService.catalog.findUnique({
       where: {
         id
+      },
+      include: {
+        products: !!shouldIncludeProducts
       }
     })
 
@@ -39,7 +46,7 @@ export class CatalogsService {
 
     await this.findOne(id);
 
-    const newCatalog = this.dbService.catalog.update({
+    const newCatalog = await this.dbService.catalog.update({
       where: { id },
       data: {
         name: updateCatalogDto.name
@@ -51,7 +58,7 @@ export class CatalogsService {
 
   async remove(id: number) {
     await this.findOne(id)
-    return this.dbService.catalog.delete({
+    return await this.dbService.catalog.delete({
       where: {
         id
       }

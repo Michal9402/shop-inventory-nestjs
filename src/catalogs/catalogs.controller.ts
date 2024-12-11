@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, ValidationPipe, Query, ParseBoolPipe } from '@nestjs/common';
 import { CatalogsService } from './catalogs.service';
 import { CreateCatalogDto } from './dto/create-catalog.dto';
 import { ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
@@ -19,16 +19,16 @@ export class CatalogsController {
   @Get()
   @ApiOperation({ summary: 'Fetch all catalogs' })
   @ApiOkResponse({ type: CatalogEntity, isArray: true, description: 'Catalogs fetched' })
-  findAll() {
-    return this.catalogsService.findAll();
+  findAll(@Query('products') shouldIncludeProducts?: string) {
+    return this.catalogsService.findAll(shouldIncludeProducts === 'true');
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get catalog by id' })
   @ApiOkResponse({ type: CatalogEntity })
   @ApiNotFoundResponse({ description: 'Invalid id provided' })
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.catalogsService.findOne(id);
+  findOne(@Param('id', ParseIntPipe) id: number, @Query('products') shouldIncludeProducts?: string) {
+    return this.catalogsService.findOne(id, shouldIncludeProducts === 'true');
   }
 
   @Patch(':id')
