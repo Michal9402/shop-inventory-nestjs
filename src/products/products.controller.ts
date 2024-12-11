@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, ParseFloatPipe, UsePipes, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, ParseFloatPipe, UsePipes, ParseIntPipe, Query, NotFoundException, BadRequestException } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -14,10 +14,15 @@ export class ProductsController {
 
   @Get()
   findAll(@Query('catalogId') catalogIdString?: string) {
-    const catalogId = Number.parseInt(catalogIdString);
-    if (catalogId > 0) {
-      return this.productsService.findInCatalog(catalogId)
+    if (catalogIdString) {
+      const catalogId = Number.parseInt(catalogIdString, 10);
+      
+      if (isNaN(catalogId) || catalogId <= 0) {
+        throw new BadRequestException('catalogId is invalid')
+      }
+      return this.productsService.findInCatalog(catalogId);
     }
+    
     return this.productsService.findAll();
   }
 

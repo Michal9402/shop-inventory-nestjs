@@ -31,7 +31,7 @@ export class CreateProductDto {
   @IsPositive()
   @Min(1)
   @Max(5)
-  @Transform(({ value }) => Number.parseInt(value))
+  @Transform(({ value }) => Number.parseInt(value, 10))
   @ApiProperty({
     description: 'Rating of the product',
     example: '3',
@@ -43,7 +43,7 @@ export class CreateProductDto {
   @IsNumber()
   @IsPositive()
   @Min(1)
-  @Transform(({ value }) => Number.parseInt(value))
+  @Transform(({ value }) => Number.parseInt(value, 10))
   @ApiProperty({
     description: 'Stock quantity of the product',
     example: '1'
@@ -52,7 +52,7 @@ export class CreateProductDto {
 
   @IsOptional()
   @IsNumber()
-  @Transform(({ value }) => Number.parseInt(value))
+  @Transform(({ value }) => Number.parseInt(value, 10))
   @ApiProperty({
     description: 'Id of catalog which owns has this product',
     example: '1',
