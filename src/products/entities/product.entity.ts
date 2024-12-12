@@ -25,7 +25,7 @@ export class ProductEntity implements ProductEntityType {
 
   @ApiProperty({
     description: 'Description of the product',
-    example: 'Lorem ipsum...',
+    example: 221,
   })
   stockQuantity: number;
 
