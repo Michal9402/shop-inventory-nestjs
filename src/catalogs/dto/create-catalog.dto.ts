@@ -1,6 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Prisma } from "@prisma/client";
-import { IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { Prisma } from '@prisma/client';
+import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class CreateCatalogDto implements Prisma.CatalogCreateInput {
   @IsString()
@@ -9,7 +9,7 @@ export class CreateCatalogDto implements Prisma.CatalogCreateInput {
   @MaxLength(20)
   @ApiProperty({
     description: 'Name of the catalog',
-    example: 'Cars'
+    example: 'Cars',
   })
   name: string;
 }

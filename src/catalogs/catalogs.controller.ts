@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, ValidationPipe, Query, ParseBoolPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+  ValidationPipe,
+  Query,
+} from '@nestjs/common';
 import { CatalogsService } from './catalogs.service';
 import { CreateCatalogDto } from './dto/create-catalog.dto';
 import {
