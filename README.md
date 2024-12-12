@@ -2,6 +2,9 @@
 
 This is a simple shop inventory application built with **NestJS** and **Prisma**. It is designed to manage catalogs and products, allowing basic inventory operations.
 
+## Swagger API
+[Swagger](http://18.157.157.53/api)
+
 ## Features
 
 - **Catalogs**: Manage product categories.
