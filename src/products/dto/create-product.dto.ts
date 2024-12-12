@@ -1,6 +1,15 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, Max, MaxLength, Min, MinLength } from "class-validator";
-import { Transform } from "class-transformer";
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  MaxLength,
+  Min,
+  MinLength,
+} from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class CreateProductDto {
   @IsString()
@@ -9,12 +18,12 @@ export class CreateProductDto {
   @MaxLength(40)
   @ApiProperty({
     description: 'Name of the product',
-    example: 'BMW'
+    example: 'BMW',
   })
   name: string;
 
   @IsNumber({
-    maxDecimalPlaces: 2
+    maxDecimalPlaces: 2,
   })
   @IsNotEmpty()
   @IsPositive()
@@ -22,22 +31,9 @@ export class CreateProductDto {
   @Transform(({ value }) => Number.parseFloat(value))
   @ApiProperty({
     description: 'Price of the product',
-    example: '3.22'
+    example: '3.22',
   })
   price: number;
-
-  @IsOptional()
-  @IsNumber()
-  @IsPositive()
-  @Min(1)
-  @Max(5)
-  @Transform(({ value }) => Number.parseInt(value, 10))
-  @ApiProperty({
-    description: 'Rating of the product',
-    example: '3',
-    required: false
-  })
-  rating?: number;
 
   @IsNotEmpty()
   @IsNumber()
@@ -46,7 +42,7 @@ export class CreateProductDto {
   @Transform(({ value }) => Number.parseInt(value, 10))
   @ApiProperty({
     description: 'Stock quantity of the product',
-    example: '1'
+    example: '1',
   })
   stockQuantity: number;
 
@@ -56,7 +52,7 @@ export class CreateProductDto {
   @ApiProperty({
     description: 'Id of catalog which owns has this product',
     example: '1',
-    required: false
+    required: false,
   })
   catalogId: number;
 }

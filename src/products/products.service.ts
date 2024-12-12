@@ -10,9 +10,20 @@ export class ProductsService {
   constructor(private readonly dbService: DatabaseService) { }
 
   async create(createProductDto: CreateProductDto) {
-    return await this.dbService.product.create({
-      data: createProductDto
-    });
+    try {
+      return await this.dbService.product.create({
+        data: createProductDto,
+      });
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err?.code === 'P2003'
+      ) {
+        throw new NotFoundException(
+          `Catalog with id: ${createProductDto?.catalogId} doesn't exists`,
+        );
+      }
+    }
   }
 
   async findAll() {

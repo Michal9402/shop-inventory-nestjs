@@ -23,7 +23,6 @@ model Product {
   id            String   @id @default(nanoid(8))
   name          String
   price         Float
-  rating        Float?
   stockQuantity Int
   catalogId     Int?
   catalog       Catalog? @relation(fields: [catalogId], references: [id])

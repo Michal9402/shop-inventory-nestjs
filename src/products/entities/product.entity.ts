@@ -2,27 +2,34 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Product } from "@prisma/client";
 
 export class ProductEntity implements Product {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Unique identifier',
+  })
   id: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Name of the product',
+    example: 'Mobile phone XYZ',
+  })
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Price of the product',
+    example: '299.99',
+  })
   price: number;
 
   @ApiProperty({
-    required: false,
-    nullable: true,
+    description: 'Description of the product',
+    example: 'Lorem ipsum...',
   })
-  rating: number | null;
-
-  @ApiProperty()
   stockQuantity: number;
 
   @ApiProperty({
+    description: 'Id of catalog where product should be placed',
+    example: 12,
     required: false,
-    nullable: true
+    nullable: true,
   })
   catalogId: number | null;
 }

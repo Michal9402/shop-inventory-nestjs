@@ -30,6 +30,14 @@ export class ProductsController {
   @Post()
   @ApiOperation({ summary: 'Create new product' })
   @ApiCreatedResponse({ type: ProductEntity })
+  @ApiNotFoundResponse({
+    description: "Catalog with id: ${catalogId} doesn't exists",
+    example: {
+      message: "Catalog with id: 1 doesn't exists",
+      error: 'Not Found',
+      statusCode: 404,
+    },
+  })
   create(@Body() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
   }
