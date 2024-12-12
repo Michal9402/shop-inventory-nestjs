@@ -3,6 +3,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { DatabaseService } from 'src/database/database.service';
 import { Prisma } from '@prisma/client';
+import { UpdateProductCatalogIdDto } from './dto/update-product-catalogid-dto';
 
 @Injectable()
 export class ProductsService {
@@ -48,15 +49,29 @@ export class ProductsService {
 
     await this.findOne(id);
 
+    const newProduct = await this.dbService.product.update({
+      where: { id },
+      data: updateProductDto
+    })
+    return newProduct;
+  }
+
+  async updateProductCatalogId(id: string, updateProductCatalogIdDto: UpdateProductCatalogIdDto ) {
+    if (!updateProductCatalogIdDto) {
+      throw new BadRequestException();
+    }
+
+    await this.findOne(id)
+
     try {
-      const newCatalog = await this.dbService.product.update({
+      const newProduct = await this.dbService.product.update({
         where: { id },
-        data: updateProductDto
+        data: updateProductCatalogIdDto
       })
-      return newCatalog;
+      return newProduct;
     } catch (err) {
       if (err instanceof Prisma.PrismaClientKnownRequestError && err?.code === 'P2003') {
-        throw new NotFoundException(`Catalog with id: ${updateProductDto?.catalogId} doesn't exists`)
+        throw new NotFoundException(`Catalog with id: ${updateProductCatalogIdDto?.catalogId} doesn't exists`)
       }
     }
   }
