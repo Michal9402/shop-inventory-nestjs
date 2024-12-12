@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.setGlobalPrefix('v1');
-  app.use(helmet);
+  app.use(helmet());
 
   const config = new DocumentBuilder()
     .setTitle('Shop Inventory API')
