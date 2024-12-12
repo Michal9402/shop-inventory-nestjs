@@ -1,7 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Product } from '@prisma/client';
 
-export class ProductEntity implements Product {
+type ProductEntityType = Omit<Product, 'catalogId'> & {
+  categoryId?: number | null;
+};
+
+export class ProductEntity implements ProductEntityType {
   @ApiProperty({
     description: 'Unique identifier',
   })
@@ -31,5 +35,5 @@ export class ProductEntity implements Product {
     required: false,
     nullable: true,
   })
-  catalogId: number | null;
+  catalogId?: number | null;
 }
