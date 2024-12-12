@@ -26,8 +26,10 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^8.1.0",
     "@prisma/client": "^6.0.1",
+    "@types/lodash": "^4.17.13",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "lodash": "^4.17.21",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
   },
@@ -70,6 +72,9 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/$1"
+    }
   }
 }

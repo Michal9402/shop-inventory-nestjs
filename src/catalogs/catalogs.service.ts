@@ -12,11 +12,12 @@ export class CatalogsService {
   constructor(private readonly dbService: DatabaseService) {}
 
   async create(createCatalogDto: CreateCatalogDto) {
-    return await this.dbService.catalog.create({
+    const result = await this.dbService.catalog.create({
       data: {
         name: createCatalogDto.name,
       },
     });
+    return result;
   }
 
   async findAll(shouldIncludeProducts?: boolean) {
