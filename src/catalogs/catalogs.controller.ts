@@ -1,13 +1,19 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, ValidationPipe, Query, ParseBoolPipe } from '@nestjs/common';
 import { CatalogsService } from './catalogs.service';
 import { CreateCatalogDto } from './dto/create-catalog.dto';
-import { ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { CatalogEntity } from './entities/catalog.entity';
 import { UpdateCatalogDto } from './dto/update-catalog.dto';
 
 @Controller('catalogs')
 export class CatalogsController {
-  constructor(private readonly catalogsService: CatalogsService) { }
+  constructor(private readonly catalogsService: CatalogsService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create new catalog' })
@@ -18,7 +24,18 @@ export class CatalogsController {
 
   @Get()
   @ApiOperation({ summary: 'Fetch all catalogs' })
-  @ApiOkResponse({ type: CatalogEntity, isArray: true, description: 'Catalogs fetched' })
+  @ApiOkResponse({
+    type: CatalogEntity,
+    isArray: true,
+    description: 'Catalogs fetched',
+  })
+  @ApiQuery({
+    name: 'products',
+    required: false,
+    description:
+      'Boolean value which represents should products be inclueded in list of catalogs',
+    type: Boolean,
+  })
   findAll(@Query('products') shouldIncludeProducts?: string) {
     return this.catalogsService.findAll(shouldIncludeProducts === 'true');
   }
@@ -27,7 +44,17 @@ export class CatalogsController {
   @ApiOperation({ summary: 'Get catalog by id' })
   @ApiOkResponse({ type: CatalogEntity })
   @ApiNotFoundResponse({ description: 'Invalid id provided' })
-  findOne(@Param('id', ParseIntPipe) id: number, @Query('products') shouldIncludeProducts?: string) {
+  @ApiQuery({
+    name: 'products',
+    required: false,
+    description:
+      'Boolean value which represents should products be inclueded in list of catalogs',
+    type: Boolean,
+  })
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+    @Query('products') shouldIncludeProducts?: string,
+  ) {
     return this.catalogsService.findOne(id, shouldIncludeProducts === 'true');
   }
 
@@ -35,7 +62,10 @@ export class CatalogsController {
   @ApiOperation({ summary: 'Update catalog name' })
   @ApiOkResponse({ type: CatalogEntity })
   @ApiNotFoundResponse({ description: 'Invalid id provided' })
-  update(@Param('id', ParseIntPipe) id: number, @Body(ValidationPipe) updateCatalogDto: UpdateCatalogDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(ValidationPipe) updateCatalogDto: UpdateCatalogDto,
+  ) {
     return this.catalogsService.update(id, updateCatalogDto);
   }
 
